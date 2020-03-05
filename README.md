@@ -1,3 +1,3 @@
 # TMBot
-Framework per fare Bot Telegram in PHP\n
-AA
+Framework per fare Bot Telegram in PHP
+A
