@@ -62,7 +62,7 @@ if($text == "/rand"){
 
 if($text == "/info"){
   if($typeChat == "private"){
-  $msg = "<b>Info Utente</b>\nNome = $name\nCognome = $surname\nUsername = $username\nID = $chatId\nTipo Chat = Privata";
+  $msg = "<b>Info Utente</b>\nNome = $name\nCognome = $surname\nUsername = $username\nID = $chatID\nTipo Chat = Privata";
   sendMessage($chatID,$msg);
 }
 if($typeChat == "supergroup"){
