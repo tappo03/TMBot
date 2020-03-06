@@ -10,4 +10,4 @@ Creato da <a href="https://t.me/LorenzoTM88">LorenzoTM88</a>
 # SETTARE WEBHOOK
 Per settare la webhook scriviamo nella barra di ricerca
 
-<code>https://api.telegram.org/botTOKEN/setWebhook?url=https://tuosito/Cartella/index.php?api=TOKEN</code>
+<code>https://api.telegram.org/botTOKEN/setWebhook?url=https://tuosito.com/Cartella/index.php?api=TOKEN</code>
