@@ -1,8 +1,7 @@
 <?php
 
 //update
-$update = file_get_contents('php://input');
-$update = json_decode($update,TRUE);
+$update = json_decode(file_get_contents('php://input'), TRUE);
 
 //token e richieste
 $token = $_GET['api'];
@@ -37,17 +36,18 @@ $tastierafisica = '["Tastiera 1"],["Tastiera 2","Tastiera 3"],["Tastiera 4"]';
 $cmd = '[{"text":"🆘 Comandi del Bot","callback_data":"cmd"}]';
 $tornaindietro = '[{"text":"🔙 Torna Indietro","callback_data":"tornaindietro"}]';
 
-
 $devMode = false;
 $admin = [674965839];
 
 
 //comandi
   if($devMode == false){
-if(stripos($text, "/start")=== 0){
+if($text == "/start"){
   sendMessage($chatID,"👋<b>Ciao $name</b>!\nQuesta è la base per bot ufficiale di <a href='t.me/LorenzoTM88'>LorenzoTM88</a>!\nClicca il button qua sotto per vedere cosa faccio!",$cmd,"inline");
 }
-
+if($text == "/test"){
+  sendMessage($chatID,"AA");
+}
 if($text == "/tinline"){
   sendMessage($chatID,"Ecco a te una tastiera inline!",$tastierainline,"inline");
 }
@@ -58,10 +58,6 @@ if($text == "/tfisica"){
 
 if($text == "/rand"){
   sendMessage($chatID,"Numero random => $rand");
-}
-
-if($text == "/update"){
-  sendMessage($chatID,$json);
 }
 
 if($text == "/info"){
@@ -79,11 +75,11 @@ if($typeChat == "group"){
 }
 }
 
-if(stripos($text,"/admin")=== 0 and in_array($userID,$admin)){
+if(strpos($text,"/admin")=== 0 and in_array($userID,$admin)){
   sendMessage($chatID,"Hey, @$username è un admin del bot! ❤️");
 }
 
-if(stripos($text,"/say")=== 0){
+if(strpos($text,"/say")=== 0){
   $mess = explode(" ",$text,2);
   $say = $mess[1];
   sendMessage($chatID,$say);
@@ -104,7 +100,7 @@ if($queryData == "tornaindietro"){
 }
 
 if($queryData == "cmd"){
-    editMessageText($queryUserID,$queryMsgID,"Comandi:\n/tfisica => Tastiera Fisica\n/tinline => Tastiera Inline\n/rand => Numero Random da 1 a 1000\n/info => Info Utente\n/update => Update del Bot\n/admin => Comando solo per admin del bot\n/say => Per far inviare un messaggio al bot (esempio '/say Ciaoo')");
+ editMessageText($queryUserID,$queryMsgID,"Comandi:\n/tfisica => Tastiera Fisica\n/tinline => Tastiera Inline\n/rand => Numero Random da 1 a 1000\n/info => Info Utente\n/admin => Comando solo per admin del bot\n/say => Per far inviare un messaggio al bot");
 }
   }
 
@@ -117,40 +113,60 @@ if($queryData == "cmd"){
 
 
 //funzioni
-  function sendMessage($chatID,$text,$key,$type){
-    if(isset($key)){
+  function sendMessage($chatID,$text,$key = false, $type = false){
+    if($key != false){
       if($type == "fisica"){
         $keyboard = '&reply_markup={"keyboard":['.urlencode($key).'],"resize_keyboard":true}';
       }
-      elseif($type == "inline") {
+      elseif($type == "inline"){
         $keyboard = '&reply_markup={"inline_keyboard":['.urlencode($key).'],"resize_keyboard":true}';
       }
     }
-    $url = $GLOBALS[request]."/sendMessage?chat_id=$chatID&parse_mode=HTML&disable_web_page_preview=true&text=".urlencode($text).$keyboard;
-    file_get_contents($url);
+    $url = $GLOBALS['request']."/sendMessage?chat_id=$chatID&parse_mode=HTML&disable_web_page_preview=true&text=".urlencode($text).$keyboard;
+    $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        json_decode($output);
+    }
+
+  function editMessageText($chatID,$message_id,$newText,$key = false, $type = false)
+  {
+    if($key != false){
+      if($type == "fisica"){
+        $keyboard = '&reply_markup={"keyboard":['.urlencode($key).'],"resize_keyboard":true}';
+      }
+      elseif($type == "inline"){
+        $keyboard = '&reply_markup={"inline_keyboard":['.urlencode($key).'],"resize_keyboard":true}';
+      }
+    }
+    $url = $GLOBALS['request']."/editMessageText?chat_id=$chatID&message_id=$message_id&parse_mode=HTML&disable_web_page_preview=true&text=".urlencode($newText).$keyboard;
+    $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        json_decode($output);
   }
 
   function answerQuery($callbackQueryID,$text){
-    $url = $GLOBALS[request]."/answerCallbackQuery?callback_query_id=$callbackQueryID&text=".urlencode($text);
-    file_get_contents($url);
-  }
-
-  function editMessageText($chatID,$message_id,$newText,$key,$type)
-  {
-    if(isset($key)){
-      if($type == "fisica"){
-        $keyboard = '&reply_markup={"keyboard":['.urlencode($key).'],"resize_keyboard":true}';
-      }
-      elseif($type == "inline") {
-        $keyboard = '&reply_markup={"inline_keyboard":['.urlencode($key).'],"resize_keyboard":true}';
-      }
-    }
-    $url = $GLOBALS[request]."/editMessageText?chat_id=$chatID&message_id=$message_id&parse_mode=HTML&disable_web_page_preview=true&text=".urlencode($newText).$keyboard;
-    file_get_contents($url);
+    $url = $GLOBALS['request']."/answerCallbackQuery?callback_query_id=$callbackQueryID&text=".urlencode($text);
+    $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        json_decode($output);
   }
 
   function deleteMessage($chatID,$message_id){
-    $url = $GLOBALS[request]."/deleteMessage?chat_id=$chatID&message_id=$message_id";
-    file_get_contents($url);
+    $url = $GLOBALS['request']."/deleteMessage?chat_id=$chatID&message_id=$message_id";
+    $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        json_decode($output);
   }
 ?>
