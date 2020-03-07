@@ -1,8 +1,9 @@
 <?php
 
 //update
+//$update = file_get_contents('php://input');
+//$update = json_decode($update,TRUE);
 $update = json_decode(file_get_contents('php://input'), TRUE);
-
 //token e richieste
 $token = $_GET['api'];
 $request = "https://api.telegram.org/bot".$token;
@@ -128,7 +129,7 @@ if($queryData == "cmd"){
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
         curl_close($ch);
-        json_decode($output);
+        return json_decode($output,TRUE);
     }
 
   function editMessageText($chatID,$message_id,$newText,$key = false, $type = false)
@@ -147,7 +148,7 @@ if($queryData == "cmd"){
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
         curl_close($ch);
-        json_decode($output);
+        return json_decode($output,TRUE);
   }
 
   function answerQuery($callbackQueryID,$text){
@@ -157,7 +158,7 @@ if($queryData == "cmd"){
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
         curl_close($ch);
-        json_decode($output);
+        return json_decode($output,TRUE);
   }
 
   function deleteMessage($chatID,$message_id){
@@ -167,6 +168,6 @@ if($queryData == "cmd"){
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
         curl_close($ch);
-        json_decode($output);
+        return json_decode($output,TRUE);
   }
 ?>
