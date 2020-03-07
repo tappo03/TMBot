@@ -1,9 +1,8 @@
 <?php
 
 //update
-//$update = file_get_contents('php://input');
-//$update = json_decode($update,TRUE);
 $update = json_decode(file_get_contents('php://input'), TRUE);
+
 //token e richieste
 $token = $_GET['api'];
 $request = "https://api.telegram.org/bot".$token;
