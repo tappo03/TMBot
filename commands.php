@@ -7,7 +7,7 @@ $tastierainline = '[{"text":"Tastiera 1","url":"t.me/LorenzoTM88"},{"text":"Tast
 $tastierafisica = '["Tastiera 1"],["Tastiera 2","Tastiera 3"],["Tastiera 4"]';
 $cmd = '[{"text":"🆘 Comandi del Bot","callback_data":"cmd"}]';
 $tornaindietro = '[{"text":"🔙 Torna Indietro","callback_data":"tornaindietro"}]';
-$config = json_decode(file_get_contents(__DIR__ . 'config.json'),TRUE);
+$config = json_decode(file_get_contents(__DIR__ . '/config.json'),TRUE);
 $admin = [674965839]; //metti gli ID degli admin
 $rand = mt_rand(1,1000);
 
