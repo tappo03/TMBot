@@ -8,7 +8,7 @@ Creato da <a href="https://t.me/LorenzoTM88">LorenzoTM88</a>
 <code>git clone https://github.com/lorenzotm88/TMBot</code>
 
 # VERSIONE PHP
-PHP 5.6 in su
+Consigliato usare PHP 7.4
 
 # SETTARE WEBHOOK
 Per settare la webhook scriviamo nella barra di ricerca
